@@ -1,3 +1,0 @@
-# GimmeMedi
-
-Setup Github
