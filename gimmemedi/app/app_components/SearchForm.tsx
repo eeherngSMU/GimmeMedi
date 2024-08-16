@@ -23,7 +23,7 @@ const formSchema = z.object({
   }),
 })
 
-export function SearchForm( {setDDetails }) {
+export function SearchForm( {setDDetails }: { setDDetails: (drugDetails: any) => void }) {
 
   const getDrugDetails = async (input: string) => {
     const res = await fetch('/api/drugs.com', {
