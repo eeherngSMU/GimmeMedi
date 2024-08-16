@@ -22,7 +22,7 @@ export default function Home() {
 
   <div className="container mx-auto p-4">
   <div className="flex justify-center mt-5">
-    <SearchForm setDDetails={setDDetails} />
+    <SearchForm dDetails={dDetails} setDDetails={setDDetails} />
   </div>
 
   <Feed dDetails={dDetails}/>

@@ -23,20 +23,36 @@ const formSchema = z.object({
   }),
 })
 
-export function SearchForm( {setDDetails }: { setDDetails: (drugDetails: any) => void }) {
+export function SearchForm({ dDetails, setDDetails }: { dDetails: any, setDDetails: (drugDetails: any) => void }) {
 
+  // const [drugInfoArr, setDrugInfoArr] = useState<any[]>([]);
+  
   const getDrugDetails = async (input: string) => {
     const res = await fetch('/api/drugs.com', {
       method: 'POST',
       body: JSON.stringify({input})
     })
   
-    console.log('input', input)
+    
     const drugDetails = await res.json()
-    setDDetails(drugDetails)
-  
-    // return { drugDetails }
+    
+    return drugDetails
   }
+
+  const getDrugMechanism = async (input: string) => {
+    const res = await fetch('/api/drugbank', {
+      method: 'POST',
+      body: JSON.stringify({input})
+    })
+  
+    
+    const drugMechanism = await res.json()
+    return drugMechanism
+    
+    
+  }
+
+
 
 
   // 1. Define your form.
@@ -48,9 +64,17 @@ export function SearchForm( {setDDetails }: { setDDetails: (drugDetails: any) =>
   })
  
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
-    getDrugDetails(values.drugname)
+    
+    
+
+    const drugMechanism = await getDrugMechanism(values.drugname)
+    const drugDetails = await getDrugDetails(values.drugname)
+    
+    const drugInfoObj = {drugDetails: drugDetails, drugMechanism: drugMechanism}
+    setDDetails(drugInfoObj)
+    console.log('drugInfoArr', drugInfoObj)
     
 
 
