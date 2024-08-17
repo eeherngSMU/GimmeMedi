@@ -1,5 +1,6 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import { NextRequest, NextResponse } from 'next/server';
+import chromium from '@sparticuz/chromium-min';
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -12,7 +13,11 @@ export const POST = async (req: NextRequest) => {
         }
 
         // Launch Puppeteer browser
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            headless: true,
+        });
         const page = await browser.newPage();
 
         // Navigate to the URL
