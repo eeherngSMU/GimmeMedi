@@ -12,12 +12,16 @@ export const POST = async (req: NextRequest) => {
             return NextResponse.json({ error: 'Request body is empty' }, { status: 400 });
         }
 
+        // Get the Chromium executable path
+        const executablePath = await chromium.executablePath();
+        console.log('Chromium executable path:', executablePath);
+
         // Launch Puppeteer browser
         const browser = await puppeteer.launch({
-            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            executablePath,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
             headless: true,
-        });
+        })
         const page = await browser.newPage();
 
         // Navigate to the URL
