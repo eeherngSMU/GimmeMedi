@@ -13,15 +13,20 @@ export const POST = async (req: NextRequest) => {
         }
 
         // Get the Chromium executable path
-        const executablePath = await chromium.executablePath();
-        console.log('Chromium executable path:', executablePath);
+        // const executablePath = await chromium.executablePath();
+        // console.log('Chromium executable path:', executablePath);
 
         // Launch Puppeteer browser
+        console.log("Using remote Chromium");
         const browser = await puppeteer.launch({
-            executablePath,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
-            headless: true,
-        })
+            args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+            defaultViewport: chromium.defaultViewport,
+            executablePath: await chromium.executablePath(
+                "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
+            ),
+            headless: chromium.headless,
+            // ignoreHTTPSErrors: true,
+        });
         const page = await browser.newPage();
 
         // Navigate to the URL
