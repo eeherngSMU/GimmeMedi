@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer-core';
 import { NextRequest, NextResponse } from 'next/server';
 import chromium from '@sparticuz/chromium-min';
+import fs from 'fs';
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -16,15 +17,22 @@ export const POST = async (req: NextRequest) => {
         // const executablePath = await chromium.executablePath();
         // console.log('Chromium executable path:', executablePath);
 
+        // Get the Chromium executable path
+        const executablePath = await chromium.executablePath();
+
+        if (!fs.existsSync(executablePath)) {
+            console.error(`Chromium executable does not exist: ${executablePath}`);
+            return NextResponse.json({ error: 'Chromium executable does not exist' }, { status: 500 });
+        }
+
+
+        console.log('Chromium executable path:', executablePath);
+
         // Launch Puppeteer browser
-        console.log("Using remote Chromium");
         const browser = await puppeteer.launch({
-            args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath(
-                "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
-            ),
-            headless: chromium.headless,
+            executablePath,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            headless: true,
             // ignoreHTTPSErrors: true,
         });
         const page = await browser.newPage();
