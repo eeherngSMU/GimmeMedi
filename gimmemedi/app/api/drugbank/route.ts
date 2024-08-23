@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer-core';
 import { NextRequest, NextResponse } from 'next/server';
-import chromium from '@sparticuz/chromium-min';
+import chromium from '@sparticuz/chromium';
 import fs from 'fs';
 
 export const POST = async (req: NextRequest) => {
