@@ -1,14 +1,31 @@
-service: sls-with-preexisting-layer
+# service: sls-with-preexisting-layer
+
+# provider:
+#   name: aws
+#   runtime: nodejs18.x
+#   stage: dev
+#   region: us-east-1
+#   timeout: 300
+
+# functions:
+#   chromium-test:
+#     handler: route.POST
+#     layers:
+#       - arn:aws:lambda:us-east-1:************:layer:chromium:*
+
+
+
+service: sls-with-layer
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs20.x
   stage: dev
-  region: us-east-1
+  region: ap-southeast-2
   timeout: 300
 
 functions:
   chromium-test:
     handler: route.POST
     layers:
-      - arn:aws:lambda:us-east-1:************:layer:chromium:*
+      - arn:aws:lambda:ap-southeast-2:209479267150:layer:chromium:1
